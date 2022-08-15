@@ -20,6 +20,16 @@ export const getUser = /* GraphQL */ `
         tokenId
         traits
       }
+      items {
+        items {
+          id
+          userID
+          itemID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -48,6 +58,147 @@ export const listUsers = /* GraphQL */ `
           contract
           tokenId
           traits
+        }
+        items {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getItem = /* GraphQL */ `
+  query GetItem($id: ID!) {
+    getItem(id: $id) {
+      id
+      name
+      price
+      description
+      traits
+      quantity
+      users {
+        items {
+          id
+          userID
+          itemID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listItems = /* GraphQL */ `
+  query ListItems(
+    $filter: ModelItemFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        price
+        description
+        traits
+        quantity
+        users {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getUserItem = /* GraphQL */ `
+  query GetUserItem($id: ID!) {
+    getUserItem(id: $id) {
+      id
+      userID
+      itemID
+      user {
+        id
+        wallet
+        tokens
+        redeemed
+        redeemDate
+        discordId
+        image
+        username
+        discriminator
+        ethMintingWallet
+        solMintingWallet
+        nfts {
+          contract
+          tokenId
+          traits
+        }
+        items {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      item {
+        id
+        name
+        price
+        description
+        traits
+        quantity
+        users {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listUserItems = /* GraphQL */ `
+  query ListUserItems(
+    $filter: ModelUserItemFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        userID
+        itemID
+        user {
+          id
+          wallet
+          tokens
+          redeemed
+          redeemDate
+          discordId
+          image
+          username
+          discriminator
+          ethMintingWallet
+          solMintingWallet
+          createdAt
+          updatedAt
+        }
+        item {
+          id
+          name
+          price
+          description
+          traits
+          quantity
+          createdAt
+          updatedAt
         }
         createdAt
         updatedAt
@@ -88,6 +239,9 @@ export const getWalletByWalletAddress = /* GraphQL */ `
           tokenId
           traits
         }
+        items {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -126,6 +280,9 @@ export const getWalletByDiscordId = /* GraphQL */ `
           contract
           tokenId
           traits
+        }
+        items {
+          nextToken
         }
         createdAt
         updatedAt
