@@ -28,7 +28,7 @@ export default function Nav() {
   
   return (
     <nav className="fren-nav d-flex">
-      <div class="logo">
+      <div className="logo">
         <img src="images/logo.png" alt="MOONCATZ MARKET" />
       </div>
       <div className="d-flex" style={{ marginLeft: "auto" }}>
