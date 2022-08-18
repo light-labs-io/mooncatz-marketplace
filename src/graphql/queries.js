@@ -107,11 +107,17 @@ export const listItems = /* GraphQL */ `
         description
         traits
         quantity
-        users {
-          nextToken
-        }
         createdAt
         updatedAt
+          users(limit: 10000) {
+              items {
+                  user {
+                      id
+                      tokens
+                      discordId
+                  }
+              }
+          }
       }
       nextToken
     }
@@ -239,8 +245,17 @@ export const getWalletByWalletAddress = /* GraphQL */ `
           tokenId
           traits
         }
-        items {
-          nextToken
+        items(limit: 10000) {
+            items {
+                item {
+                    description
+                    id
+                    name
+                    price
+                    quantity
+                    traits
+                }
+            }
         }
         createdAt
         updatedAt
@@ -281,8 +296,17 @@ export const getWalletByDiscordId = /* GraphQL */ `
           tokenId
           traits
         }
-        items {
-          nextToken
+        items(limit: 10000) {
+            items {
+                item {
+                    description
+                    id
+                    name
+                    price
+                    quantity
+                    traits
+                }
+            }
         }
         createdAt
         updatedAt
