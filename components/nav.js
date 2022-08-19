@@ -1,8 +1,11 @@
 import Link from 'next/link'
+import useItem from "../backend/item";
+import useUser from "../backend/user";
 //import styles from './sidebar.module.css'
 
 // need to pass in client.isConnected
 export default function Nav() {
+  const [user, session, logIn, logOut] = useUser();
 
   const connectWeb3 = async () => {
     try {
@@ -17,10 +20,11 @@ export default function Nav() {
         method: "eth_requestAccounts",
       });
 
-      setclient({
-        isConnected: true,
-        address: accounts[0],
-      });
+      // setclient({
+      //   isConnected: true,
+      //   address: accounts[0],
+      // });
+      await logIn(accounts[0]);
     } catch (error) {
       console.log("Error connecting to metamask", error);
     }
@@ -34,14 +38,15 @@ export default function Nav() {
       <div className="d-flex" style={{ marginLeft: "auto" }}>
         <div>
           <button className="btn connect-btn" onClick={connectWeb3}>
-            {client.isConnected ? (
-              <>
-                {client.address.slice(0, 4)}...
-                {client.address.slice(38, 42)}
-              </>
-            ) : (
-              <>Connect Wallet</>
-            )}
+            ytest
+            {/*{client.isConnected ? (*/}
+            {/*  <>*/}
+            {/*    {client.address.slice(0, 4)}...*/}
+            {/*    {client.address.slice(38, 42)}*/}
+            {/*  </>*/}
+            {/*) : (*/}
+            {/*  <>Connect Wallet</>*/}
+            {/*)}*/}
           </button>
         </div>
       </div>

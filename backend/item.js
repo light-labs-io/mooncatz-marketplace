@@ -77,6 +77,7 @@ function useItem() {
                 setSubscriptionOnCreate(_subscriptionOnCreate);
             }
 
+
             return () => {
                 controller.abort();
                 subscriptionOnUpdate?.unsubscribe();
