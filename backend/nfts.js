@@ -1,7 +1,7 @@
 import { API } from "aws-amplify";
 import { updateUser } from "../src/graphql/mutations";
 import { getNftsForOwner } from "@alch/alchemy-sdk";
-import { alchemy, contract } from "../shared/contants";
+import { ALCHEMY, CONTRACT } from "../shared/contants";
 
 export async function updateNFTs(obj) {
     try {
@@ -26,9 +26,9 @@ export async function updateNFTs(obj) {
 }
 
 export async function getNFTS(wallet) {
-    const results = await getNftsForOwner(alchemy, wallet, {
+    const results = await getNftsForOwner(ALCHEMY, wallet, {
         contractAddresses: [
-            contract,
+            CONTRACT,
         ],
     });
 
@@ -40,7 +40,7 @@ export async function getNFTS(wallet) {
             },
             body: JSON.stringify({
                 wallet: wallet,
-                contract: contract,
+                contract: CONTRACT,
                 token_ids: nft.tokenId,
             }),
             method: "POST",

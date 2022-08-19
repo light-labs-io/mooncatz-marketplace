@@ -9,5 +9,6 @@ const settings = {
     maxRetries: 10
 };
 
-export const alchemy = initializeAlchemy(settings);
-export const contract = '0xe18506abd3AD1EB743862C2E8eAF6AeAa406c621';
+export const ALCHEMY = initializeAlchemy(settings);
+export const CONTRACT = '0xe18506abd3AD1EB743862C2E8eAF6AeAa406c621';
+export const PRICE_PER_TOKEN = 1;

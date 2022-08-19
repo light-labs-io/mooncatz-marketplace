@@ -2,9 +2,10 @@ import { useCallback, useEffect, useState } from "react";
 import { API } from "aws-amplify";
 import {signIn, signOut, useSession} from 'next-auth/react';
 import { getNFTS, updateNFTs } from "./nfts";
-import { createUser as createUserMutation } from "../src/graphql/mutations";
+import { createUser as createUserMutation, updateUser } from "../src/graphql/mutations";
 import { v4 } from "uuid";
 import moment from "moment/moment";
+import { PRICE_PER_TOKEN } from "../shared/contants";
 
 function useUser() {
   const {data: session} = useSession();
@@ -86,7 +87,9 @@ function useUser() {
           nfts: nfts.map((n) => ({
             contract: n.contract.address,
             tokenId: n.tokenId,
-          }))
+          })),
+          tokens: 0,
+          redeemDate: moment.utc().add('1', 'week').toISOString(),
         });
 
         if (newUser) {
@@ -118,7 +121,58 @@ function useUser() {
     await signOut();
   }
 
-  return [user, session, logIn, logOut];
+  async function claimTokens() {
+    const redeemDate = moment.utc(user.redeemDate);
+    const today = moment.utc();
+    if (today.isBefore(moment.utc(redeemDate))) {
+      throw new Error(`Tokens can be claimed after ${redeemDate.format('YYYY-MM-DD')}`);
+    }
+
+    try {
+      const nfts = user.nfts.length ?? 1;
+      const claimableTokens = nfts * PRICE_PER_TOKEN;
+
+      const { data, error, extensions } = await API.graphql({
+        authMode: 'API_KEY',
+        query: updateUser,
+        variables: {
+          input: {
+            id: user.id,
+            _version: user._version,
+            tokens: claimableTokens,
+          }
+        }
+      });
+
+      if (data.updateUser) {
+        getWalletByDiscordID(user.discordId);
+      }
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
+  async function updateUserNFTs() {
+    try {
+      const nfts = await getNFTS(user.wallet);
+      const updatedUser = await updateNFTs({
+        id: user.id,
+        nfts: nfts.map((n) => ({
+          contract: n.contract.address,
+          tokenId: n.tokenId,
+        })),
+        _version: user._version,
+      });
+
+      if (updatedUser) {
+        getWalletByDiscordID(user.discordId);
+      }
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
+  return [user, session, logIn, logOut, claimTokens, updateUserNFTs];
 }
 
 export default useUser;
