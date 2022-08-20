@@ -3,9 +3,10 @@ import { API } from "aws-amplify";
 import {signIn, signOut, useSession} from 'next-auth/react';
 import { getNFTS, updateNFTs } from "./nfts";
 import { createUser as createUserMutation, updateUser } from "../src/graphql/mutations";
+import { getWalletByDiscordId } from "../src/graphql/queries";
 import { v4 } from "uuid";
 import moment from "moment/moment";
-import { PRICE_PER_TOKEN } from "../shared/contants";
+import { HOLDER_ROLE, PRICE_PER_TOKEN } from "../shared/contants";
 
 function useUser() {
   const {data: session} = useSession();
@@ -55,52 +56,72 @@ function useUser() {
   }
 
   const saveUser = useCallback(async () => {
-    if (session) {
-      const localUser = JSON.parse(localStorage.getItem('user') ?? '{"id": null}');
-      const user = await getWalletByDiscordID(session.discordUserDetails?.id ?? localUser.discordId);
+    if (localStorage.getItem('user')) {
+      return;
+    }
 
-      if (user) {
-        const nfts = await getNFTS(user.wallet);
-        const updatedUser = await updateNFTs({
-          id: user.id,
-          nfts: nfts.map((n) => ({
-            contract: n.contract.address,
-            tokenId: n.tokenId,
-          })),
-          _version: user._version,
-        });
+    const localUser = JSON.parse(localStorage.getItem('user') ?? '{"id": null}');
+    const user = await getWalletByDiscordID(session.discordUserDetails?.id ?? localUser.discordId);
 
-        if (updatedUser) {
-          localStorage.setItem('user', JSON.stringify(updatedUser));
-          setUser(updatedUser ?? null);
-        }
-      } else {
-        const wallet = localStorage.getItem('wallet');
-        const nfts = await getNFTS(wallet ?? '');
+    const roles = session.roles ?? [];
 
-        const newUser = await createUser({
-          wallet: wallet ?? '',
-          discordId: session.discordUserDetails.id,
-          image: session.user.image,
-          username: session.discordUserDetails.username,
-          discriminator: session.discordUserDetails.discriminator,
-          nfts: nfts.map((n) => ({
-            contract: n.contract.address,
-            tokenId: n.tokenId,
-          })),
-          tokens: 0,
-          redeemDate: moment.utc().add('1', 'week').toISOString(),
-        });
+    if (!roles.includes(HOLDER_ROLE)) {
+      throw new Error('User is not part of server or does not have holder role');
+    }
 
-        if (newUser) {
-          localStorage.setItem('user', JSON.stringify(newUser));
-          setUser(newUser ?? null);
+    try {
+      if (session) {
+        if (user) {
+          const nfts = await getNFTS('0x73e4A0e0F785278De16811089217207d37b78b71');
+
+          if (nfts.length === 0) {
+            throw new Error('User does not own any/are listed nfts');
+          }
+
+          const updatedUser = await updateNFTs({
+            id: user.id,
+            nfts: nfts.map((n) => ({
+              contract: n.contract.address,
+              tokenId: n.tokenId,
+            })),
+            _version: user._version,
+          });
+
+          if (updatedUser) {
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+            setUser(updatedUser ?? null);
+          }
+        } else {
+          const wallet = localStorage.getItem('wallet');
+          const nfts = await getNFTS(wallet ?? '');
+
+          const newUser = await createUser({
+            wallet: wallet ?? '',
+            discordId: session.discordUserDetails.id,
+            image: session.user.image,
+            username: session.discordUserDetails.username,
+            discriminator: session.discordUserDetails.discriminator,
+            nfts: nfts.map((n) => ({
+              contract: n.contract.address,
+              tokenId: n.tokenId,
+            })),
+            tokens: 0,
+            redeemDate: moment.utc().add('1', 'week').toISOString(),
+          });
+
+          if (newUser) {
+            localStorage.setItem('user', JSON.stringify(newUser));
+            setUser(newUser ?? null);
+          }
         }
       }
+    } catch (e) {
+      throw new Error(e.message);
     }
   }, [session]);
 
   useEffect(() => {
+    console.log(session);
     const controller = new AbortController();
     saveUser();
     return () => {
@@ -112,12 +133,13 @@ function useUser() {
     if (!wallet) {
       throw new Error('Wallet address required');
     }
+    localStorage.setItem('wallet', wallet);
     await signIn('discord');
   }
 
   async function logOut() {
-    localStorage.remove('user');
-    localStorage.remove('wallet');
+    localStorage.removeItem('user');
+    localStorage.removeItem('wallet');
     await signOut();
   }
 

@@ -1,7 +1,7 @@
 import { initializeAlchemy, Network } from "@alch/alchemy-sdk";
 
-export const ADMIN_ROLE = '929862913341136916';
-export const GUILD_ID = '894681066621771836';
+export const HOLDER_ROLE = '1002338175915675769';
+export const GUILD_ID = '1002313653669855263';
 
 const settings = {
     apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_ID,
@@ -10,5 +10,5 @@ const settings = {
 };
 
 export const ALCHEMY = initializeAlchemy(settings);
-export const CONTRACT = '0xe18506abd3AD1EB743862C2E8eAF6AeAa406c621';
+export const CONTRACT = '0x12b180b635dd9f07a78736fb4e43438fcdb41555';
 export const PRICE_PER_TOKEN = 1;
