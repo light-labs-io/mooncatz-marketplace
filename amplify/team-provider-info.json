@@ -1,0 +1,15 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-mooncatzmarketplace-staging-194826-authRole",
+      "UnauthRoleArn": "arn:aws:iam::447467872714:role/amplify-mooncatzmarketplace-staging-194826-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::447467872714:role/amplify-mooncatzmarketplace-staging-194826-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-mooncatzmarketplace-staging-194826-deployment",
+      "UnauthRoleName": "amplify-mooncatzmarketplace-staging-194826-unauthRole",
+      "StackName": "amplify-mooncatzmarketplace-staging-194826",
+      "StackId": "arn:aws:cloudformation:us-east-1:447467872714:stack/amplify-mooncatzmarketplace-staging-194826/3b0c6a60-1cd3-11ed-a41c-12802789b65f",
+      "AmplifyAppId": "d1idvo82z34699"
+    }
+  }
+}
