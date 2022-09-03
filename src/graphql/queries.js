@@ -143,6 +143,7 @@ export const getUserItem = /* GraphQL */ `
         discriminator
         ethMintingWallet
         solMintingWallet
+        itemsStarred
         nfts {
           contract
           tokenId
@@ -197,6 +198,7 @@ export const listUserItems = /* GraphQL */ `
           solMintingWallet
           createdAt
           updatedAt
+          itemsStarred
         }
         item {
           id
@@ -240,6 +242,7 @@ export const getWalletByWalletAddress = /* GraphQL */ `
         image
         username
         discriminator
+        itemsStarred
         ethMintingWallet
         solMintingWallet
         nfts {
@@ -294,6 +297,7 @@ export const getWalletByDiscordId = /* GraphQL */ `
         discriminator
         ethMintingWallet
         solMintingWallet
+        itemsStarred
         nfts {
           contract
           tokenId

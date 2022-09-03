@@ -17,8 +17,6 @@ export async function updateNFTs(obj) {
             }
         });
 
-        console.error(error);
-
         return data ? data.updateUser : undefined;
     } catch (e) {
         console.error(e);
