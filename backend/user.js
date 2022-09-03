@@ -12,6 +12,32 @@ function useUser() {
   const {data: session} = useSession();
   const [user, setUser] = useState();
 
+  async function startItem(itemId, user) {
+    if (user.itemsStarred.includes(itemId)) {
+      throw new Error('Item already starred');
+    }
+
+    try {
+      const { data, error, extensions } = await API.graphql({
+        authMode: 'API_KEY',
+        query: updateUser,
+        variables: {
+          input: {
+            id: user.id,
+            _version: user._version,
+            itemsStarred: [
+              ...user.itemsStarred,
+              itemId,
+            ]
+          }
+        }
+      });
+      return data ? data.updateUser : null;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
   async function getWalletByDiscordID(discordId) {
     try {
       const { data, error, extensions } = await API.graphql({
@@ -194,7 +220,7 @@ function useUser() {
     }
   }
 
-  return [user, session, logIn, logOut, claimTokens, updateUserNFTs];
+  return [user, session, logIn, logOut, claimTokens, updateUserNFTs, startItem];
 }
 
 export default useUser;

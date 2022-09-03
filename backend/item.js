@@ -202,6 +202,10 @@ function useItem() {
 
         const item = items.items.find((i) => i.id === itemId);
 
+        if (item.id === itemId) {
+            throw new Error('User has already owns item');
+        }
+
         if (item.quantity && item.users.items.length < items.quantity) {
             throw new Error('Item sold out');
         }
