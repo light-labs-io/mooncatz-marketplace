@@ -124,6 +124,7 @@ export const createItem = /* GraphQL */ `
       description
       traits
       quantity
+      slots
       users {
         items {
           id
@@ -151,6 +152,7 @@ export const updateItem = /* GraphQL */ `
       description
       traits
       quantity
+      slots
       users {
         items {
           id
@@ -178,6 +180,7 @@ export const deleteItem = /* GraphQL */ `
       description
       traits
       quantity
+      slots
       users {
         items {
           id

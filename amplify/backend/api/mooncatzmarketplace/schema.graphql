@@ -26,6 +26,7 @@ type User @model @auth(rules: [{allow: public}]) {
     ethMintingWallet: String
     solMintingWallet: String
     nfts: [NFTs]
+    itemsStarred: [String]
     items: [Item] @manyToMany(relationName: "UserItem")
 }
 
@@ -36,5 +37,6 @@ type Item @model @auth(rules: [{allow: public}]) {
     description: String
     traits: String
     quantity: Int
+    slots: String
     users: [User] @manyToMany(relationName: "UserItem")
 }

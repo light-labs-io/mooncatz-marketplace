@@ -8,6 +8,9 @@ import { v4 } from "uuid";
 import moment from "moment/moment";
 import { HOLDER_ROLE, PRICE_PER_TOKEN } from "../shared/contants";
 
+// TODO add a staring system
+// TODO load the json data - items
+
 function useUser() {
   const {data: session} = useSession();
   const [user, setUser] = useState();
