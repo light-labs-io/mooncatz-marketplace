@@ -19,13 +19,22 @@ body {
   background-repeat: repeat-x;
 }
 
+body>div {
+/*  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  height: 100%;
+*/}
+
 a {
   text-decoration: none;
   color: #800080;
 }
 
 main {
-  max-height: 80%;
+  /*height: 100%;*/
 }
 
 .d-flex {
@@ -38,10 +47,15 @@ main {
   left: 50%;
   -webkit-transform: translate(-50%);
   transform: translate(-50%);
+  height: 42px;
+}
+
+.logo img {
+  margin: 8px 0 0 0;
 }
 
 .fren-nav {
-  padding: 60px 30px;
+  padding: 40px 30px 80px;
   background-image: url("/images/head_moon.png");
   background-repeat: no-repeat;
   background-position: 10% 0px;
@@ -66,28 +80,27 @@ main {
 }
 
 .container {
+  /*display: flex;*/
   justify-content: center;
   text-align: center;
-  height: 95vh;
-  /*background-color: #333;*/
   padding: 0 30px;
+  /*width: 100%;*/
+  height: 100%;
 }
 
 .grid {
   display: flex;
+  /*align-items: center;*/
   justify-content: center;
   flex-wrap: wrap;
-  /*border: 1px solid #444;*/
   border-radius: 10px;
   margin: 0 auto;
-  /*padding: 1.5rem;*/
-  /*background-color: #777;*/
   width: 100%;
-  max-height: 800px;
+  height: 100%;
 }
 
 .room,
-.itemMenu {
+.menu {
   text-align: left;
   color: inherit;
   text-decoration: none;
@@ -98,6 +111,7 @@ main {
   /*display: flex;*/
   position: relative;
   width: 66%;
+  top: -50%;
   /*background-color: #373;*/
 }
 
@@ -109,47 +123,141 @@ main {
   /*bottom: 0px;*/
 }
 
-.itemMenu {
-  width: 34%;
-  /*background-color: #337;*/
-  vertical-align: top;
-  padding: 0 0 0 20px;
-}
-
 .room .roomLayer img {
   height: 100%;
   width: 100%;
   object-fit: cover;
 }
 
-.itemMenuBorder {
+.menu {
+  width: 34%;
+  /*background-color: #337;*/
+  /*vertical-align: top;*/
+  padding: 0 0 0 20px;
+}
+
+.menuBorder {
   border: 1px solid #444;
   border-radius: 10px;
-  padding: 10px;
+  padding: 5px;
   height: 100%;
+  -webkit-transition: all 0.3s ease-out 0s;
+  transition: all 0.3s ease-out 0s;
+
 }
 
-.itemList {
-  /*background-color: #333;*/
-}
-
-.itemList ul {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.itemList li {
-  background-color: #555;
+/*.menu .btn {
+  color: #777;
+  background-color: #222;
   border: 1px solid #444;
   border-radius: 5px;
   list-style: none;
-  display: inline-block;
-  width: calc(100% / 2 - 10px);
-  height: 120px;
+  width: calc(100% - 10px);
+  height: calc(30px);
   text-align: center;
-  padding: 10px;
   margin: 5px;
+  cursor: pointer;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 30px;
+}
+
+.menu .btn:hover {
+  color: #fff;
+  background-color: #800080;
+  border-color: #fff;
+  margin: 5px 0px;
+  width: calc(100%);
+  -webkit-transition: all 0.3s ease-out 0s;
+  transition: all 0.3s ease-out 0s;
+}*/
+
+.menu .btn {
+  color: #777;
+  background-color: #222;
+  border: 1px solid #444;
+  border-radius: 5px;
+  list-style: none;
+  height: calc(30px);
+  text-align: center;
+  margin: 5px;
+  cursor: pointer;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 36px;
+}
+
+.menu .btn:hover {
+  color: #fff;
+  background-color: #800080;
+  border-color: #fff;
+  /*margin: 5px 0px;*/
+  /*width: calc(100%);*/
+  -webkit-transition: all 0.3s ease-out 0s;
+  transition: all 0.3s ease-out 0s;
+}
+
+.menu .menuUp {
+  line-height: 25px;
+}
+
+.menu .menuUp img {
+  opacity: 0.45;
+}
+
+.menu .menuUp:hover {
+
+}
+
+.menu .menuUp:hover img {
+  opacity: 1;
+}
+
+.menu .menuUp.disabled,
+.menu .menuUp.disabled:hover {
+  color: #777;
+  background-color: #111;
+  border-color: #222;
+  cursor: default;
+}
+
+.menu .menuUp.disabled img,
+.menu .menuUp.disabled:hover img {
+  opacity: .1;
+}
+
+.menu .menuTitle,
+.menu .menuTitle:hover {
+  text-align: center;
+  color: #777;
+  background: none;
+  border: none;
+  text-transform: uppercase;
+  cursor: default;
+}
+
+.menu .btn.menuItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(50% - 10px);
+  height: 60px;
+  line-height: 22px;
+}
+
+.menu .btn.menuItem:hover {
+
+}
+
+.itemList {
+  display: flex;
+  /*flex-direction: row;*/
+  flex-wrap: wrap;
+  max-height: 600px;
+}
+
+.itemList li {
+  width: calc(100% / 3);
 }
 
 /* media query for mobile devices */

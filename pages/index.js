@@ -1,15 +1,9 @@
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
-//import { fsPromises } from 'fs/promises';
-//import { path } from 'path';
-//import { signMessage } from "../utils/sign";
-// import { resize } from "../utils/windowResizeHandler.js";
-
 import Link from "next/link";
 import Room from "../components/room";
+import Menu from "../components/menu";
 import Metamask from "../components/metamask";
-import RoomAssets from "../utils/roomAssets.json"
-//import Nav from "../components/nav";
 
 const Index = () => {
   const [haveMetamask, setHaveMetamask] = useState(true);
@@ -43,6 +37,7 @@ const Index = () => {
 
   const checkConnection = async () => {
     const { ethereum } = window;
+    console.log("checkConnection");
     if (ethereum) {
       setHaveMetamask(true);
       const accounts = await ethereum.request({ method: "eth_accounts" });
@@ -64,11 +59,13 @@ const Index = () => {
   };
 
   const getBalance = async (address) => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const balance = await provider.getBalance(address);
-    const balanceInEth = ethers.utils.formatEther(balance);
-    console.log(address);
-    console.log(balanceInEth);
+    if (address) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const balance = await provider.getBalance(address);
+      const balanceInEth = ethers.utils.formatEther(balance);
+      console.log(address);
+      console.log(balanceInEth);
+    };
   };
 
   const getMooncatzBalance = async (address) => {
@@ -91,32 +88,22 @@ const Index = () => {
       .catch((err) => error(err)));
   };
 
-  const getRoomAssets = () => {
-    let assetCats = [];
-    for (let i = 0; i < RoomAssets.children[0].children.length; i++) {
-      assetCats.push(RoomAssets.children[0].children[i].name);
-    }
-    console.log(assetCats);
-  }
-
-  getRoomAssets();
-
   useEffect(() => {
     checkConnection();
-    window.onresize = (e) => {
+    // window.onresize = (e) => {
       // Keeps Menu Items Square
-      let menuItems = document.getElementsByClassName("menuItem");
-      for (let i = 0; i < menuItems.length; i++){
-        menuItems[i].style.height = (menuItems[i].offsetWidth + "px");
-      };
-    };
+      // let menuItems = document.getElementsByClassName("menuItem");
+      // for (let i = 0; i < menuItems.length; i++){
+      //   menuItems[i].style.height = (menuItems[i].offsetWidth + "px");
+      // };
+    // };
 
   }, []);
 
   return (
     <>
       <nav className="fren-nav d-flex">
-        <div class="logo">
+        <div className="logo">
           <img src="images/logo.png" alt="MOONCATZ MARKET" />
         </div>
         <div className="d-flex" style={{ marginLeft: "auto" }}>
@@ -142,18 +129,7 @@ const Index = () => {
           {/* ---- */}
           <div className="grid">
             <Room />
-            <div className="itemMenu">
-              <div className="itemMenuBorder">
-                <ul className="itemList">
-                  <li className="menuItem"><button>Beds</button></li>
-                  <li className="menuItem"><button>Desks</button></li>
-                  <li className="menuItem"><button>Chairs</button></li>
-                  <li className="menuItem"><button>Paintings</button></li>
-                  <li className="menuItem"><button>Plants</button></li>
-                  <li className="menuItem"><button>Wallpaper</button></li>
-                </ul>
-              </div>
-            </div>
+            <Menu />
           </div>
 
           {/* ---- */}
