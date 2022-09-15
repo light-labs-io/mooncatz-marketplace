@@ -20,21 +20,34 @@ body {
 }
 
 body>div {
-/*  position: absolute;
+  position: absolute;
   top: 0px;
   bottom: 0px;
   left: 0px;
   right: 0px;
   height: 100%;
-*/}
+}
 
 a {
   text-decoration: none;
   color: #800080;
 }
 
+hr {
+  border: 0;
+  height: 1px;
+  margin: 10px 0;
+  background-image:
+    linear-gradient(
+      to right,
+      rgba(127, 127, 127, 0),
+      rgba(127, 127, 127, 1),
+      rgba(127, 127, 127, 0)
+    );
+}
+
 main {
-  /*height: 100%;*/
+  height: 100%;
 }
 
 .d-flex {
@@ -79,6 +92,12 @@ main {
   transition: all 0.3s ease-out 0s;
 }
 
+.menu .btn:hover:active {
+  background-color: #00F;
+  -webkit-transition: all 0.3s ease-out 0s;
+  transition: all 0.3s ease-out 0s;
+}
+
 .container {
   /*display: flex;*/
   justify-content: center;
@@ -97,6 +116,8 @@ main {
   margin: 0 auto;
   width: 100%;
   height: 100%;
+  max-width: 1000px;
+  max-height: 600px;
 }
 
 .room,
@@ -111,29 +132,40 @@ main {
   /*display: flex;*/
   position: relative;
   width: 66%;
-  top: -50%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  max-height: 600px;
   /*background-color: #373;*/
 }
 
-.roomLayer {
+.roomLayer,
+.roomSubLayer {
   /*display: flex;*/
   position: absolute;
-  left: 0px;
   top: 0px;
+  right: 0px;
   /*bottom: 0px;*/
+  left: 0px;
+  max-height: 600px;
 }
 
-.room .roomLayer img {
+.room .roomLayer img,
+.room .roomSubLayer img {
+  display: flex;
+  margin-left: auto;
   height: 100%;
   width: 100%;
-  object-fit: cover;
+  max-height: 600px;
+  max-width: 664px;
+  /*object-fit: cover;*/
 }
 
 .menu {
   width: 34%;
-  /*background-color: #337;*/
-  /*vertical-align: top;*/
   padding: 0 0 0 20px;
+  
 }
 
 .menuBorder {
@@ -145,32 +177,6 @@ main {
   transition: all 0.3s ease-out 0s;
 
 }
-
-/*.menu .btn {
-  color: #777;
-  background-color: #222;
-  border: 1px solid #444;
-  border-radius: 5px;
-  list-style: none;
-  width: calc(100% - 10px);
-  height: calc(30px);
-  text-align: center;
-  margin: 5px;
-  cursor: pointer;
-  overflow: hidden;
-  font-size: 12px;
-  line-height: 30px;
-}
-
-.menu .btn:hover {
-  color: #fff;
-  background-color: #800080;
-  border-color: #fff;
-  margin: 5px 0px;
-  width: calc(100%);
-  -webkit-transition: all 0.3s ease-out 0s;
-  transition: all 0.3s ease-out 0s;
-}*/
 
 .menu .btn {
   color: #777;
@@ -191,25 +197,20 @@ main {
   color: #fff;
   background-color: #800080;
   border-color: #fff;
-  /*margin: 5px 0px;*/
-  /*width: calc(100%);*/
   -webkit-transition: all 0.3s ease-out 0s;
   transition: all 0.3s ease-out 0s;
 }
 
-.menu .menuUp {
-  line-height: 25px;
-}
-
-.menu .menuUp img {
+.menuUp .icon {
+  width: 100%;
+  height: 100%;
+  background-image: url("/images/icon_back.png");
+  background-repeat: no-repeat;
+  background-position: center;
   opacity: 0.45;
 }
 
-.menu .menuUp:hover {
-
-}
-
-.menu .menuUp:hover img {
+.menuUp:hover .icon {
   opacity: 1;
 }
 
@@ -221,8 +222,8 @@ main {
   cursor: default;
 }
 
-.menu .menuUp.disabled img,
-.menu .menuUp.disabled:hover img {
+.menu .menuUp.disabled .icon,
+.menu .menuUp.disabled:hover .icon {
   opacity: .1;
 }
 
@@ -241,13 +242,35 @@ main {
   justify-content: center;
   align-items: center;
   width: calc(50% - 10px);
-  height: 60px;
+  height: 90px;
   line-height: 22px;
 }
 
 .menu .btn.menuItem:hover {
 
 }
+
+.rotBtn {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+}
+
+.rotBtn .icon {
+  /* not sure where this pixel came from */
+  margin: -1px 0 0 -1px;
+  width: 30px;
+  height: 30px;
+  background-image: url("/images/icon_rotate.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.45;
+}
+
+.rotBtn:hover .icon {
+  opacity: 1;
+}
+
 
 .itemList {
   display: flex;
@@ -258,6 +281,29 @@ main {
 
 .itemList li {
   width: calc(100% / 3);
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 9999;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
 }
 
 /* media query for mobile devices */

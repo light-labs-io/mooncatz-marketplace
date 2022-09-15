@@ -1,11 +1,18 @@
 const fs = require('fs');
 const dirTree = require("directory-tree");
 
-const tree = dirTree("../../public/images/room");
+const mainTree = dirTree("../../public/images/room");
 
 let paths = [];
 
-function getAllPaths(obj) {
+const rename = () => {
+  fs.rename('/path/to/' + obj[p] + '.png', '/path/to/' + p + '.png', function(err) {
+    if ( err ) console.log('ERROR: ' + err);
+  });
+}
+
+
+const getAllPaths = (obj) => {
   for (let k in obj) {
     if (typeof obj[k] === "object") {
       getAllPaths(obj[k])
@@ -28,6 +35,6 @@ function getAllPaths(obj) {
 // fs.writeFileSync('roomPNGs.json', pathsJSON);
 
 let treeJSON = JSON.stringify(tree);
-fs.writeFileSync('roomAssets.json', treeJSON);
+fs.writeFileSync('roomAssetsThumbsNew.json', treeJSON);
 
 console.log(treeJSON);

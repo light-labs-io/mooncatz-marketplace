@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react";
-import RoomAssets from "../pages/api/roomAssets.json";
+import RoomAssets from "../pages/api/roomAssetsFullScrubbed.json";
 
 const Menu = () => {
+  // TODO: Hook up tooltip for button hovers
   console.log("Menu() got called again?");
 
-  const [menuLevel, setMenuLevel] = useState(0);
   const [menuCoords, setMenuCoords] = useState([]);
+  // make current menu category JSON a state?
+  let curDir = RoomAssets;
+
+  // lame.
+  const curSlot = "";
+  const curCatID = 0;
 
   const genMenu = () => {
     let curItems = RoomAssets;
@@ -13,49 +19,72 @@ const Menu = () => {
       console.log("menuCoords: " + menuCoords);
       for (let k in menuCoords) {
         curItems = curItems.children[menuCoords[k]];
+        // curSlot not super dependable solution. get some sleep and refactor
+        if (curItems.slot) {
+          curSlot = curItems.slot;
+        }
       }
     }
-
     return curItems;
+  }
+
+  const getItemData = (coords, i) => {
+    let curItems = RoomAssets;
+    if (coords.length) {
+      for (let k in coords) {
+        curItems = curItems.children[coords[k]];
+      }
+    }
+    return curItems.children[i];
+
   }
 
   const menuItem = (cat) => {
     let isItem = cat.name.includes(".png");
     let content;
     if (isItem) {
-      content = <img src={ cat.path.replace("/images/room", "/images/room thumbs") } width="48" height="48" />;
+      content = <img src={ cat.thumb } width="120" height="120" />;
     } else {
       content = cat.name;
     }
-    return  <li className="menuItem btn"
-                catid={ curMenuData.children.indexOf(cat) }
-                onClick={
-                  isItem ? handleItemClick : handleCatClick
-                }>
-                { content }
+    return  <li className={ isItem ? "menuItem btn isItem" : "menuItem btn" }
+              catid={ curMenuData.children.indexOf(cat) }
+              slotname={ cat.slot }
+              onClick={
+                isItem ? handleItemClick : handleCatClick
+            }>
+              { content }
             </li>
   }
 
-  const handleUpClick = () => {
-    if (menuLevel > 0) {
-      setMenuLevel(menuLevel - 1);
+  const handleUpClick = (e) => {
+    if (menuCoords.length) {
       setMenuCoords(menuCoords => [...menuCoords.slice(0, -1)]);
     };
   }
 
   const handleCatClick = (e) => {
-    if (!e.target.innerText.includes(".png")) {
-      setMenuLevel(menuLevel + 1);
-      const clickedCat = e.target.getAttribute("catid");
-      setMenuCoords(menuCoords => [...menuCoords, clickedCat]);
-    } else {
-      console.log("is a PNG");
-    }
+    const clickedCat = e.currentTarget.getAttribute("catid");
+    setMenuCoords(menuCoords => [...menuCoords, clickedCat]);
   }
 
   const handleItemClick = (e) => {
-    console.log("clicked " + e.target)
-    e.target.getAttribute("catid");
+    curCatID = e.currentTarget.getAttribute("catid");
+    const itemData = getItemData(menuCoords, curCatID);
+    console.log(curSlot + " / " + curCatID);
+    document.getElementById(curSlot).src = itemData.path;
+  }
+
+  const handleRotateClick = (e) => {
+    console.log("rotate!:" + menuCoords);
+    const itemData = getItemData(menuCoords, curCatID);
+    console.log(curSlot + " / " + curCatID);
+    console.log(itemData.reverse);
+    document.getElementById(curSlot).src = itemData.reverse;
+  }
+
+  const flipBed = () => {
+    
   }
 
   let curMenuData = genMenu();
@@ -65,9 +94,9 @@ const Menu = () => {
       <div className="menu">
         <div className="menuBorder">
           <div id="lastCatBtn"
-            className={ (menuLevel == 0) ? "menuUp btn disabled" : "menuUp btn"}
+            className={ (menuCoords.length) ? "menuUp btn" : "menuUp btn disabled" }
             onClick={ handleUpClick }>
-            <img src="images/menu_arrow_up.png" />
+            <div className="icon"></div>
           </div>
           <div className="menuTitle btn">{ curMenuData.name }</div>
           <ul className="itemList">
@@ -75,6 +104,12 @@ const Menu = () => {
               menuItem(cat)
             ))}
           </ul>
+          <hr />
+          <div id="rotateBtn"
+            className={ (curSlot == "bedFrame") ? "rotBtn btn tooltip" : "rotBtn btn tooltip disabled" }
+            onClick={ handleRotateClick }>
+              <div className="icon"></div>
+          </div>
         </div>
       </div>
     </>

@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import Link from "next/link";
 import Room from "../components/room";
 import Menu from "../components/menu";
+import Tooltip from "../components/tooltip";
 import Metamask from "../components/metamask";
 
 const Index = () => {
